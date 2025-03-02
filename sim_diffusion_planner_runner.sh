@@ -5,29 +5,29 @@ export HYDRA_FULL_ERROR=1
 # User Configuration Section
 ###################################
 # Set environment variables
-export NUPLAN_DEVKIT_ROOT="REPLACE_WITH_NUPLAN_DEVIKIT_DIR"  # nuplan-devkit absolute path (e.g., "/home/user/nuplan-devkit")
-export NUPLAN_DATA_ROOT="REPLACE_WITH_DATA_DIR"  # nuplan dataset absolute path (e.g. "/data")
-export NUPLAN_MAPS_ROOT="REPLACE_WITH_MAPS_DIR" # nuplan maps absolute path (e.g. "/data/nuplan-v1.1/maps")
-export NUPLAN_EXP_ROOT="REPLACE_WITH_EXP_DIR" # nuplan experiment absolute path (e.g. "/data/nuplan-v1.1/exp")
+export NUPLAN_DEVKIT_ROOT="/home/zhouxinning/Workspace/Diffusion-Planner/nuplan-devkit"  # nuplan-devkit absolute path (e.g., "/home/user/nuplan-devkit")
+export NUPLAN_DATA_ROOT="/data/zhouxinning/nuPlan/nuplan/dataset"  # nuplan dataset absolute path (e.g. "/data")
+export NUPLAN_MAPS_ROOT="/data/zhouxinning/nuPlan/nuplan/dataset/maps" # nuplan maps absolute path (e.g. "/data/nuplan-v1.1/maps")
+export NUPLAN_EXP_ROOT="/data/zhouxinning/nuPlan/nuplan/exp" # nuplan experiment absolute path (e.g. "/data/nuplan-v1.1/exp")
 
 # Dataset split to use
 # Options: 
 #   - "test14-random"
 #   - "test14-hard"
 #   - "val14"
-SPLIT="REPLACE_WITH_SPLIT"  # e.g., "val14"
+SPLIT="val14"  # e.g., "val14"
 
 # Challenge type
 # Options: 
 #   - "closed_loop_nonreactive_agents"
 #   - "closed_loop_reactive_agents"
-CHALLENGE="REPLACE_WITH_CHALLENGE"  # e.g., "closed_loop_nonreactive_agents"
+CHALLENGE="closed_loop_reactive_agents"  # e.g., "closed_loop_nonreactive_agents"
 ###################################
 
 
 BRANCH_NAME=diffusion_planner_release
-ARGS_FILE=./checkpoints/args.json
-CKPT_FILE=./checkpoints/model.pth
+ARGS_FILE=/home/zhouxinning/Workspace/Diffusion-Planner/checkpoints/args.json
+CKPT_FILE=/home/zhouxinning/Workspace/Diffusion-Planner/checkpoints/model.pth
 
 if [ "$SPLIT" == "val14" ]; then
     SCENARIO_BUILDER="nuplan"
@@ -40,7 +40,8 @@ FILENAME_WITHOUT_EXTENSION="${FILENAME%.*}"
 
 PLANNER=diffusion_planner
 
-python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py \
+# python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py \
+python3 -m debugpy --wait-for-client --listen 5678 $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py \
     +simulation=$CHALLENGE \
     planner=$PLANNER \
     planner.diffusion_planner.config.args_file=$ARGS_FILE \
